@@ -1,12 +1,20 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [ToDos, setToDos] = useState([]);
+  const [ToDos, setToDos] = useState(()=>{
+    const storedToDos = localStorage.getItem("ToDos")
+    return storedToDos?JSON.parse(storedToDos):[]
+  });
   const [ToDo, setToDo] = useState("");
   const options = { weekday: 'long' };
 const currentDayName = new Intl.DateTimeFormat('en-US', options).format(new Date());
+
+
+useEffect(()=>{
+  localStorage.setItem('ToDos',JSON.stringify(ToDos))
+},[ToDos])
 
   return (
     <>
@@ -16,7 +24,7 @@ const currentDayName = new Intl.DateTimeFormat('en-US', options).format(new Date
         </div>
         <div className="subHeading">
           <br />
-          <h2>Whoop, its {currentDayName} 🌝 ☕ </h2>
+          <h2 style={{marginLeft:'50px'}}>Wow, its {currentDayName} 🌝 ☕ </h2>
         </div>
         <div className="input">
           <input
@@ -28,7 +36,7 @@ const currentDayName = new Intl.DateTimeFormat('en-US', options).format(new Date
             placeholder="🖊️ Add item..."
           />
           <i
-            onClick={(e)=> {if(ToDo.length>0) setToDos([...ToDos,{id:Date.now(), text:ToDo,status:false}])}}
+            onClick={()=> {if(ToDo.length>0) setToDos([...ToDos,{id:Date.now(), text:ToDo,status:false}]); setToDo('')}}
             className="fa-solid fa-circle-plus"
           ></i>
         </div>
@@ -49,11 +57,10 @@ const currentDayName = new Intl.DateTimeFormat('en-US', options).format(new Date
                   <p>{data.text}</p>
                 </div>
                 <div className="right">
-                  <i onClick={()=>setToDos(ToDos.filter((newData)=>{
-                    if(newData.id==data.id){
-                        data.status = false
-                    }
-                  }))} className="fa-solid fa-trash-can"></i>
+                  <i onClick={()=>setToDos(ToDos.filter((newData)=>{ return(
+                    newData.id!==data.id                    
+                  )}
+                  ))} className="fa-solid fa-trash-can"></i>
                 </div>
               </div>
             );
@@ -67,7 +74,7 @@ const currentDayName = new Intl.DateTimeFormat('en-US', options).format(new Date
                 return(
                   <React.Fragment key={index} >
                   <br />
-                  <li><del>{data.text}</del> 
+                  <li style={{color:"white"}}><del>{data.text}</del> 
                   </li>
                   </React.Fragment>
                 )

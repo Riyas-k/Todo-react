@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: #9d9d9d;
+  background-image:url('https://img.freepik.com/free-photo/top-view-desk-top-with-list-notebook_23-2148443714.jpg?w=740&t=st=1683009578~exp=1683010178~hmac=b6b8d87149e4802ce19463f6e175104792fad61dc7a96863d8bc1e88aec7ff65');
 }
 
 .app {
@@ -21,7 +21,7 @@ body {
 
 .app h1,
 h2 {
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
 }
 
 .app .input {
