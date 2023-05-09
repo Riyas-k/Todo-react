@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { useState } from "react";
 import "./App.css";
 
@@ -11,9 +11,12 @@ function App() {
   const options = { weekday: 'long' };
 const currentDayName = new Intl.DateTimeFormat('en-US', options).format(new Date());
 
+const inputRef = useRef()
 
 useEffect(()=>{
   localStorage.setItem('ToDos',JSON.stringify(ToDos))
+  inputRef.current.placeholder ="🖊️ Add item..."
+  inputRef.current.focus()
 },[ToDos])
 
   return (
@@ -28,12 +31,12 @@ useEffect(()=>{
         </div>
         <div className="input">
           <input
-            value={ToDo}
+            value={ToDo} ref={inputRef}
             onChange={(e) => {
               setToDo(e.target.value);
             }}
             type="text"
-            placeholder="🖊️ Add item..."
+            
           />
           <i
             onClick={()=> {if(ToDo.length>0) setToDos([...ToDos,{id:Date.now(), text:ToDo,status:false}]); setToDo('')}}
